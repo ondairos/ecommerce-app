@@ -5,27 +5,24 @@ import { Dialog } from "@headlessui/react";
 import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useParams, useRouter } from "next/navigation";
-import { Router } from "next/router";
 import { useEffect, useState } from "react";
 
-// modal function
-import React from "react";
-
-export default function Modal() {
+function Modal() {
   let [isOpen, setIsOpen] = useState(true);
-  // get id with useParams
   const id = useParams().id;
-  // state for products
   const [product, setProduct] = useState<Product>();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // fetch product client side
   useEffect(() => {
     async function fetchProduct() {
+      setLoading(true);
       const res = await fetch(`https://fakestoreapi.com/products/${id}`);
       const product = await res.json();
 
       setProduct(product);
+
+      setLoading(false);
     }
 
     fetchProduct();
@@ -36,81 +33,92 @@ export default function Modal() {
       open={isOpen}
       onClose={() => {
         setIsOpen(false);
-        // return to main page
         router.back();
       }}
       className="relative z-50"
     >
-      {/* the backdrop, rendered as a fixed sibling to the panel container */}
+      {/* The backdrop, rendered as a fixed sibling to the panel container */}
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
-      {/* fullscreen scrollable container */}
+      {/* Full-screen scrollable container */}
       <div className="fixed inset-0 overflow-y-auto">
-        {/* container to center the panel */}
+        {/* Container to center the panel */}
         <div className="flex min-h-full items-center justify-center p-4">
-          {/* dialog panel */}
+          {/* The actual dialog panel  */}
           <Dialog.Panel className="mx-auto max-w-3xl rounded bg-white p-10">
-            <div className="flex gap-x-8 h-96">
-              {product?.image && (
-                <div className="relative w-72 h-full hidden md:inline">
-                  <ProductImage product={product} fill />
-                </div>
-              )}
+            {/* if loading */}
+            {loading ? (
+              // display spinning circle
+              <div className="h-8 w-8 rounded-full border-2 border-dotted border-blue-600 animate-spin" />
+            ) : (
+              // when loading done display the dialogPanel
+              <div className="flex gap-x-8 h-96">
+                {product?.image && (
+                  <div className="relative w-72 h-full hidden md:inline">
+                    <ProductImage product={product} fill />
+                  </div>
+                )}
+                <div className="flex-1 flex flex-col">
+                  <div className="flex-1">
+                    <h4 className="font-semibold">{product?.title}</h4>
+                    <p className="font-medium text-sm">${product?.price}</p>
 
-              <div className="flex-1 flex flex-col">
-                <div className="flex-1">
-                  <h4 className="font-semibold">{product?.title}</h4>
-                  <p className="font-medium text-sm">{product?.price}</p>
-                  <div className="flex items-center text-sm my-4">
-                    <p>{product?.rating.rate}</p>
-                    {product?.rating.rate && (
-                      <div className="flex items-center ml-2 mr-6">
-                        {/* display 5 stars but display the rate ones as StarIconOutline */}
-                        {Array.from(
-                          { length: Math.floor(product.rating.rate) },
-                          (_, i) => (
-                            <StarIcon
-                              key={i}
-                              className="h-4 w-4 text-yellow-500"
-                            />
-                          )
-                        )}
+                    <div className="flex items-center text-sm my-4">
+                      <p>{product?.rating.rate}</p>
+                      {product?.rating.rate && (
+                        <div className="flex items-center ml-2 mr-6">
+                          {/* Display 5 stars but display the rate ones as StarIconOutline  */}
+                          {Array.from(
+                            { length: Math.floor(product.rating.rate) },
+                            (_, i) => (
+                              <StarIcon
+                                key={i}
+                                className="h-4 w-4 text-yellow-500"
+                              />
+                            )
+                          )}
 
-                        {/* Display the rest of the stars as StarIconOutline  */}
-                        {Array.from(
-                          { length: 5 - Math.floor(product.rating.rate) },
-                          (_, i) => (
-                            <StarIconOutline
-                              key={i}
-                              className="h-4 w-4 text-yellow-500"
-                            />
-                          )
-                        )}
-                      </div>
-                    )}
-                    <p className="text-blue-600 hover:underline cursor-pointer text-xs">
-                      See all {product?.rating.count} reviews
+                          {/* Display the rest of the stars as StarIconOutline  */}
+                          {Array.from(
+                            { length: 5 - Math.floor(product.rating.rate) },
+                            (_, i) => (
+                              <StarIconOutline
+                                key={i}
+                                className="h-4 w-4 text-yellow-500"
+                              />
+                            )
+                          )}
+                        </div>
+                      )}
+                      <p className="text-blue-600 hover:underline cursor-pointer text-xs">
+                        See all {product?.rating.count} reviews
+                      </p>
+                    </div>
+
+                    <p className="line-clamp-5 text-sm">
+                      {product?.description}
                     </p>
                   </div>
-                  <p className="line-clamp-5 text-sm">{product?.description}</p>
-                </div>
-                <div className="space-y-3 text-sm">
-                  <button className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
-                    Add to bag
-                  </button>
-                  {/* button for reloading and not using interception on page (.)product */}
-                  <button
-                    onClick={() => window.location.reload()}
-                    className="button w-full bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent"
-                  >
-                    View full details
-                  </button>
+
+                  <div className="space-y-3 text-sm">
+                    <button className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
+                      Add to bag
+                    </button>
+                    <button
+                      onClick={() => window.location.reload()}
+                      className="button w-full bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent"
+                    >
+                      View full details
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </Dialog.Panel>
         </div>
       </div>
     </Dialog>
   );
 }
+
+export default Modal;
