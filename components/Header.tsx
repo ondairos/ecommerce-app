@@ -16,10 +16,10 @@ function Header() {
       </Link>
 
       <div className="flex items-center space-x-2.5 text-sm">
-        <button className="button bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
+        <button className="button bg-sky-500 text-white border-transparent hover:border-sky-600 hover:bg-transparent hover:text-black">
           Log in
         </button>
-        <button className="button bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent">
+        <button className="button bg-transparent border-sky-600 hover:bg-sky-600 hover:text-white hover:border-transparent">
           Sign up
         </button>
       </div>

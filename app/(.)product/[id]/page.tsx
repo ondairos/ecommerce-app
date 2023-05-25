@@ -49,7 +49,7 @@ function Modal() {
             {/* if loading */}
             {loading ? (
               // display spinning circle
-              <div className="h-8 w-8 rounded-full border-2 border-dotted border-blue-600 animate-spin" />
+              <div className="h-8 w-8 rounded-full border-2 border-dotted border-sky-600 animate-spin" />
             ) : (
               // when loading done display the dialogPanel
               <div className="flex gap-x-8 h-96">
@@ -101,12 +101,12 @@ function Modal() {
                   </div>
 
                   <div className="space-y-3 text-sm">
-                    <button className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
+                    <button className="button w-full bg-sky-600 text-white border-transparent hover:border-sky-600 hover:bg-transparent hover:text-black">
                       Add to bag
                     </button>
                     <button
                       onClick={() => window.location.reload()}
-                      className="button w-full bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent"
+                      className="button w-full bg-transparent border-sky-600 hover:bg-sky-600 hover:text-white hover:border-transparent"
                     >
                       View full details
                     </button>
