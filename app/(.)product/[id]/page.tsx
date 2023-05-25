@@ -5,6 +5,7 @@ import { Dialog } from "@headlessui/react";
 import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useParams, useRouter } from "next/navigation";
+import { Router } from "next/router";
 import { useEffect, useState } from "react";
 
 // modal function
@@ -16,6 +17,7 @@ export default function Modal() {
   const id = useParams().id;
   // state for products
   const [product, setProduct] = useState<Product>();
+  const router = useRouter();
 
   // fetch product client side
   useEffect(() => {
@@ -32,7 +34,11 @@ export default function Modal() {
   return (
     <Dialog
       open={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={() => {
+        setIsOpen(false);
+        // return to main page
+        router.back();
+      }}
       className="relative z-50"
     >
       {/* the backdrop, rendered as a fixed sibling to the panel container */}
@@ -51,11 +57,11 @@ export default function Modal() {
                 </div>
               )}
 
-              <div>
-                <div>
+              <div className="flex-1 flex flex-col">
+                <div className="flex-1">
                   <h4 className="font-semibold">{product?.title}</h4>
                   <p className="font-medium text-sm">{product?.price}</p>
-                  <div>
+                  <div className="flex items-center text-sm my-4">
                     <p>{product?.rating.rate}</p>
                     {product?.rating.rate && (
                       <div className="flex items-center ml-2 mr-6">
@@ -86,6 +92,19 @@ export default function Modal() {
                       See all {product?.rating.count} reviews
                     </p>
                   </div>
+                  <p className="line-clamp-5 text-sm">{product?.description}</p>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <button className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
+                    Add to bag
+                  </button>
+                  {/* button for reloading and not using interception on page (.)product */}
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="button w-full bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent"
+                  >
+                    View full details
+                  </button>
                 </div>
               </div>
             </div>
