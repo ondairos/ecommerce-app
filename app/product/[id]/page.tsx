@@ -14,7 +14,7 @@ export default async function ProductPage({ params: { id } }: Props) {
     const response = await fetch(`https://fakestoreapi.com/products/${id}`);
     const product: Product = await response.json();
     return (
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8 px-4 mt-48 pb-10">
+      <div className="max-w-5xl mx-auto min-h-screen flex flex-col md:flex-row items-center gap-8 px-4 mt-30 pb-6">
         <ProductImage product={product} />
 
         <div>

@@ -1,16 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import LogoIcon from "../public/shopping-bag-flat.svg";
 
 function Header() {
   return (
-    <header className="flex items-center px-4 md:px-12 py-2 justify-between fixed top-0 w-full bg-white z-50 shadow">
-      <Link href="/">
-        <Image
-          src="https://i.ibb.co/McdzmYG/logo-removebg-preview-new.png"
-          width={70}
-          height={70}
-          alt="Logo"
-        />
+    <header className="flex items-center px-4 md:px-12 py-2 justify-between fixed top-0 w-full bg-slate-100 z-50 shadow">
+      <Link
+        href="/"
+        className="flex flex-col md:flex-row justify-center text-center"
+      >
+        <Image src={LogoIcon} alt="Logo" className="mx-auto" />
+        <div className="flex my-auto pl-1">
+          Online<strong>Shop</strong>
+        </div>
       </Link>
 
       <div className="flex items-center space-x-2.5 text-sm">
